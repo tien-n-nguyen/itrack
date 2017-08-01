@@ -1,0 +1,216 @@
+\section{Introduction}
+
+
+During development, a software system constantly evolves. After changes
+are made to the system, regression testing is often performed to help
+detect the regression faults in the previously existing
+functionality. Developers often run the new version of the system
+against its existing test cases to make sure that those changes did
+not introduce unintended defects. However, as the system evolves, the
+program entities such as classes and methods that realize its
+functionality are also modified or replaced by other entities. Therefore,
+in regression testing, some previously run test cases need to be
+adapted to use the replacing classes and methods.
+
+%in accordance with such changes in program entities.
+
+For example, at version v0.9.20 of jFreeChart, an open-source chart
+drawing tool in Java,
+\code{DatasetUtilities.getDomain\-Extent(Dataset)} ($m$) is
+responsible for the calculation of the domain of input data
+points. Several changes were made to that code to create v0.9.21. A
+new method \code{DatasetUtilities.findDomainExtent(Dataset)} ($m'$)
+with a different implementation was created to replace $m$, which was
+deprecated according to jFreeChart's documentation. All existing test
+cases at version v0.9.20 that contain method calls to $m$ had to be
+changed with respect to this replacement of $m$. That is, all method
+calls to $m$ had to be redirected to $m'$ to ensure that those test
+cases would be able to test the same aspects as before in the system.
+
+During software development with several distributed team members, the
+documentation for such replacements of classes/methods is not always
+available in time. It is helpful for the testers, who might not be the
+authors of those entities, to have an automated tool that provides
+such matching of the entities between two versions. From the knowledge
+about the matching, developers can fix the broken method calls in
+existing test cases.
+%%proceed faster the adaptation of existing test cases with the use of
+%%replacing entities.
+
+%The testers usually have to manually figure out by themselves such
+%replacements by tracking those classes and methods across
+%versions. That task is very tedious and time-consuming.  Therefore, it
+%is desirable to have an automatic tracking tool that supports the
+%matching of the entities between two versions, i.e. recovers the pairs
+%of entities with the same or slightly changed role/functionality.
+
+%Unfortunately, during the development process, the documentation for
+%code changes and specifically for such classes/methods' replacements
+%is not always complete. The testers usually have to manually figure
+%out by themselves such replacements by tracking those classes and
+%methods across versions. That task is very tedious and time-consuming.
+%Therefore, it is desirable to have an automatic tracking tool that
+%supports the matching of the entities between two versions,
+%i.e. recovers the pairs of entities with the same or slightly changed
+%role/functionality.
+
+%The previously run test case for the data domain calculation at
+%version v0.9.20 had to be adapted accordingly with the replacement of
+%$m$ because the body of that test case contains the method invocations
+%to $m$. That call ought to be redirected to $m'$ to ensure that those
+%test cases would be able to test the same aspects as before in the
+%system.
+
+%Software systems in reality continuously evolve. Regression testing is
+%used to check whether the change of a system does not affect some of
+%its functionality. Since when a software system changes, its program
+%entities, such as classes/methods, also change. Thus, to perform
+%regression testing, one needs to match entities in the old version to
+%ones in the new version that have the same role or provide the same
+%functionality. For example, if a method is renamed from $m$ to $m'$,
+%developers should replace any calls to $m$ by $m'$ in the test cases
+%to ensure those test cases will be able to test the same aspects of
+%the system.
+
+%A program always consists of logical entities such as classes,
+%methods, variables, and so on. One or multiple program entities are
+%designed to provide a functionality in the system. When the program
+%evolves for bug fixing, code restructuring, or feature enhancing, its
+%entities are also changed (being renamed, moved, or modified). Those
+%changes are of interest for system comprehension, maintenance, and
+%other tasks.
+
+In general, such a tool must match an entity in an old version to the
+corresponding entity with the same or slightly changed functional role
+in the new version. Intuitively, program entities across two versions
+could be matched based on their names as the names could reveal the
+roles or functionality. One could also match via their implementations
+as the implementation describes functionality. However, in reality,
+there are cases in which the classes/methods are changed in both
+names and internal implementations, making such matching difficult.
+
+%The lack of documentation and the large number of program entities in
+%large-scale systems makes manual matching/tracking of those entities
+%tedious and time-consuming. Therefore, it is desirable to have an
+%automatic tracking tool supporting the matching the entities between
+%two versions, i.e. recover pairs of entities that support the same or
+%slightly changed functionality. Intuitively, we could match entities
+%based on their names (as naming could reveal the role or
+%functionality). We could also match based on implementation (as
+%implementation describes functionality). However, in reality, there
+%are some cases, the entities might change both in name and
+%implementation, making the such matching for them difficult.
+%as shown in the next example, 
+
+In this paper, we propose {\tool}, an {\em interaction-based} tool to
+match the program entities mainly based on the interaction
+%and dependencies 
+among them. Our idea is that, an entity is generally associated
+with some role/functionality in the system, and this role is rather
+stable as the system evolves. The role of an entity correlates with
+its interaction
+%/dependencies 
+with other entities (\eg how it uses or is used by others). Thus,
+{\tool} matches the entities between versions based on the similarity
+of their interaction.
+%/dependencies. 
+Based on the matched entities, {\tool} then identifies the
+existing test cases that need to be changed to fix broken method calls
+by using the replacing entities.
+%use the replacements of old entities.
+
+%This is very useful because without it, a tester must go through all
+%previous test cases and determine if they requires an adaptation due
+%to the entities' replacements.
+
+% Representation of system
+
+{\tool} represents a system at any version as {\em an attributed,
+  directed multigraph}, in which the {\em nodes represent classes and
+  methods}, the {\em edges represent different kinds of their
+  interaction}, and the {\em attributes represent the associated
+  information} of the entities, \eg their names, signatures,
+etc. {\tool} supports tracking two types of program entities: classes
+and methods. The attributes and relations of classes/methods represent
+three main kinds of their interaction in a program: {\em method
+  invocation}, {\em data access}, and {\em inheritance}.
+
+For each entity, {\tool} maintains three kinds of attributes and
+relations/interaction: {\em signature}, {\em inheritance}, and {\em
+  collaboration}. The signature of an entity contains its name and
+interface information. The attributes of inheritance relations of an
+entity refer to the other classes that inherit or are inherited from
+that class. The attributes of collaboration relations of an entity
+refer to the entities that are used in its body or use that entity in
+their bodies.  Thus, for each entity, {\tool} associates it with {\em
+  an interaction set} corresponding to each kind of
+interaction. Matching of program entities is then formulated as the
+matching between the nodes of two graphs at two versions, which takes
+into account the similarity of interaction of the entities as one of
+the matching criteria.
+
+The key challenge of computing interaction similarity between two
+entities is that it has a recursive nature. For~example, when
+matching two entities $A$ and $A'$, {\tool} must~compare two other
+entities $B$ and $B'$ that are used/called respectively within $A$
+and $A'$. Such comparison of $B$ to $B'$ in~turn~requires the matching
+of $A$ and $A'$ because $A$ and $A'$ use/call $B$~and $B'$
+respectively. Another case of this nature is when $m$~calls~$n$ and
+both $m$ and $n$ are renamed.
+%----------------------------
+%{\tool} calculates the interaction similarity between two entities as
+%a weighted sum of the similarity of all of their interaction sets. The
+%similarity for two interaction sets is defined as the ratio between
+%the size of their common subset and the average of their sizes where
+%the common subset is {\em the maximum set of the pairs of
+%already-matched entities} between two sets.
+%------------------------------
+To address that, {\tool} differs from the existing approaches in its
+efficient measurement of the interaction similarity and matching of
+the entities in which two key advances are combined: 1) {\em
+  interaction-based} and 2) {\em iterative matching}. First, the
+candidates are discovered based on interaction, \ie when two entities
+are matched, the entities related to them, such as the containing
+classes, superclasses, callers, and callees, will be the candidates
+for further matching. Second, the entities are matched iteratively,
+\ie the already-matched entities are used to calculate and update the
+interaction similarities of the remaining candidates. {\tool} also
+uses other similarity measures in traditional origin analysis (\eg
+name, code structure, and calling relation similarity) to reduce the
+number of comparisons.
+
+Our empirical evaluation shows that {\tool} can achieve 84--99\%
+accuracy in identifying the previous test cases that need to be
+repaired with regard to the replacements of entities and provide the
+matching of entities to fix broken method calls in those test
+cases. The key contributions of this paper include
+
+1. A novel formulation and algorithm for matching the program entities
+having the same or slightly changed roles/functionality across two
+versions of an evolving system;
+
+%2. A technique that uses the matching algorithm to determine the
+%previously run test cases that need to be adapted accordingly to the
+%classes/methods' replacements. The resulting matches from the matching
+%algorithm will facilitate the test case adaptation in regression
+%testing;
+
+2. A method that uses the resulting matches 
+%from the matching algorithm 
+to determine the existing test cases that need to be repaired and to
+recommend the fixes to their broken method calls in the test cases;
+
+% in the existing test cases,
+
+%adapted to use replacing entities and facilitate the test case
+%adaptation in regression testing;
+
+3. {\tool}, an interaction-based entity matching tool; and
+
+4. An empirical evaluation on real-world systems, showing the
+   correctness and scalability of our tool.
+
+Sections~2 presents motivating examples of entity matching for
+regression testing. Section~3 and Section~4 present our formulation
+and algorithms. Sections~5 describes the evaluation. Section~6 is for
+related work. Conclusions appear last.

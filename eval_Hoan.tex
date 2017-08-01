@@ -1,0 +1,45 @@
+\subsubsection{Adding AutoPruning Functionality}
+
+In JFreeChart from version 0.9.16 to 0.9.17, one constructor $m_1$ = \code{DefaultTableXYDataset(XYSeries} was deprecated and a new constructor $m_2$ = \code{DefaultTableXYDataset(boolean} was introduced to add the functionality of autopruning. Since $m_2$ has different parameter type and much different body with $m_1$, KPW cannot match them even if $m_1$ is deleted in the new version.
+
+\begin{figure}[t]
+DefaultTableXYDataset.java in version 0.9.16
+\begin{lstlisting}[basicstyle=\scriptsize\sffamily, language = Java]
+public DefaultTableXYDataset(XYSeries series) {
+ this.data = new ArrayList();
+ this.xPoints = new HashSet();
+ if (series != null) {
+  if (series.getAllowDuplicateXValues()) {
+   throw new IllegalArgumentException("...");
+  }
+  updateXPoints(series);
+  data.add(series);
+  series.addChangeListener(this);
+ }
+}
+\end{lstlisting}
+DefaultTableXYDataset.java in version 0.9.17
+\begin{lstlisting}[basicstyle=\scriptsize\sffamily, language = Java]
+public DefaultTableXYDataset(boolean autoPrune) {
+ this.autoPrune = autoPrune;
+ this.data = new ArrayList();
+ this.xPoints = new HashSet();
+}
+@Deprecated
+public DefaultTableXYDataset(XYSeries series) {
+ this.data = new ArrayList();
+ this.xPoints = new HashSet();
+ if (series != null) {
+  if (series.getAllowDuplicateXValues()) {
+   throw new IllegalArgumentException("...");
+  }
+  updateXPoints(series);
+  this.data.add(series);
+  series.addChangeListener(this);
+ }
+ this.autoPrune = false;
+}
+\end{lstlisting}
+\caption{Getting Domain Axis in JHotDraw}
+\label{plot}
+\end{figure}

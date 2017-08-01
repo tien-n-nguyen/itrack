@@ -1,0 +1,201 @@
+\begin{thebibliography}{10}
+
+\bibitem{lsh}
+A.~Andoni and P. Indyk.
+\newblock E2LSH 0.1 User manual.
+\newblock http://web.mit.edu/andoni/www/LSH/manual.pdf.
+
+\bibitem{Antoniol04}
+G.~Antoniol, M.~D. Penta, and E.~Merlo.
+\newblock An automatic approach to identify class evolution discontinuities.
+\newblock In {\em IWPSE'04}, pages 31--40. IEEE CS, 2004.
+
+\bibitem{Apiwattanapong04}
+T.~Apiwattanapong, A.~Orso, and M.~J. Harrold.
+\newblock A differencing algorithm for object-oriented programs.
+\newblock In {\em ASE'04}. IEEE CS.
+%, 2004.
+%pages 2--13.
+
+\bibitem{Binkley1995}
+D.~Binkley, S.~Horwitz, and T.~Reps.
+\newblock Program integration for languages with procedure calls.
+\newblock {\em ACM Transactions on Software Engineering and Methodology},
+  4(1):3--35, 1995.
+
+\bibitem{ldiff09}
+G.~Canfora, L.~Cerulo, and M.~Di~Penta.
+\newblock Ldiff: An enhanced line differencing tool.
+\newblock In {\em ICSE'09}, pp. 595--598. IEEE CS.
+% 2009.
+
+\bibitem{Cottrell07}
+R.~Cottrell, J.~J.~C. Chang, R.~J. Walker, and J.~Denzinger.
+\newblock Determining detailed structural correspondence for generalization
+  tasks.
+\newblock In {\em FSE'07}, pp. 165--174. ACM, 2007.
+
+\bibitem{semdiff08}
+B.~Dagenais and M.~P. Robillard.
+\newblock Recommending adaptive changes for framework evolution.
+\newblock In {\em ICSE'08}. ACM, 2008.
+%pp. 481--490.
+
+\bibitem{Demeyer00}
+S.~Demeyer, S.~Ducasse, and O.~Nierstrasz.
+\newblock Finding refactorings via change metrics.
+\newblock In {\em OOPSLA '00}, pp. 166--177. ACM, 2000.
+
+\bibitem{Dig06}
+D.~Dig and R.~Johnson.
+\newblock Automated detection of refactorings in evolving components.
+\newblock In {\em ECOOP'06}. Springer, 2006.
+%pp. 404--428.
+
+\bibitem{Asklund'04}
+T.~Ekman and U.~Asklund.
+\newblock Refactoring-aware versioning in eclipse.
+\newblock {\em Electr. Notes Theor. Comput. Sci.}, 107:57--69, 2004.
+
+\bibitem{Fluri07}
+B.~Fluri, M.~W\"ursch, M.~Pinzger, and H.~C. Gall.
+\newblock Change distilling---tree differencing for fine-grained source code
+  change extraction.
+\newblock {\em IEEE Trans. on Softw. Eng.}, 33(11):18, 2007.
+
+\bibitem{godfrey05}
+M.~W. Godfrey and L.~Zou.
+\newblock Using origin analysis to detect merging and splitting of source code
+  entities.
+\newblock {\em IEEE Trans. Softw. Eng.}, 31(2):166--181, 2005.
+
+\bibitem{cdiff}
+J.~Grass.
+\newblock {A Syntax Directed Differencer for C++ Programs}.
+\newblock In {\em Proceedings of the Usenix C++ Conference}, 1992.
+
+\bibitem{Horwitz1990}
+S.~Horwitz.
+\newblock Identifying the semantic and textual differences between two versions
+  of a program.
+\newblock In {\em PLDI'90}. ACM, 1990.
+%pp. 234--245
+
+\bibitem{Hunt02}
+J.~J. Hunt and W.~F. Tichy.
+\newblock Extensible language-aware merging.
+\newblock In {\em ICSM'02}, IEEE CS, 2002.
+
+\bibitem{Jackson1994}
+D.~Jackson and D.~A. Ladd.
+\newblock Semantic diff: A tool for summarizing the effects of modifications.
+\newblock In {\em ICSM'94}, pages 243--252. IEEE CS, 1994.
+
+\bibitem{ccfinder}
+T.~Kamiya, S.~Kusumoto, and K.~Inoue.
+\newblock CCFinder: a multilinguistic token-based code clone detection system
+  for large scale source code.
+\newblock {\em IEEE Trans. Softw. Eng.}, 28(7):654--670, 2002.
+
+\bibitem{Kim09}
+M.~Kim and D.~Notkin.
+\newblock Discovering and representing systematic code changes.
+\newblock In {\em ICSE'09}, pages 309--319. IEEE CS, 2009.
+
+\bibitem{Kim07}
+M.~Kim, D.~Notkin, and D.~Grossman.
+\newblock Automatic inference of structural changes for matching across program
+  versions.
+\newblock In {\em ICSE'07}, pages 333--343. IEEE CS, 2007.
+
+\bibitem{sungkim-wcre05}
+S.~Kim, K.~Pan, and E.~J. Whitehead, Jr.
+\newblock When functions change their names: Automatic detection of origin
+  relationships.
+\newblock In {\em WCRE'05}, pages 143--152. IEEE CS, 2005.
+
+\bibitem{Malpohl00}
+G.~Malpohl, J.~J. Hunt, and W.~F. Tichy.
+\newblock Renaming detection.
+\newblock {\em Automated Software Engineering}, 10(2):183--202, 2000.
+
+\bibitem{Neamtiu05}
+I.~Neamtiu, J.~S. Foster, and M.~Hicks.
+\newblock Understanding source code evolution using abstract syntax tree
+  matching.
+\newblock In {\em MSR'05}, pages 2--6, 2005.
+
+\bibitem{oopsla10}
+H.~A. Nguyen, T.~T. Nguyen, G.~Wilson, A.~T. Nguyen, M.~Kim, and T.~N. Nguyen.
+\newblock A graph-based approach to API usage adaptation.
+\newblock In {\em OOPSLA'10}. ACM, 2010.
+
+\bibitem{ase09}
+T.~T. Nguyen, H.~A. Nguyen, N.~H. Pham, J.~M. Al-Kofahi, and T.~N. Nguyen.
+\newblock {Clone-aware Configuration Management}.
+\newblock In {\em ASE'09}. ACM Press, 2009.
+
+\bibitem{andy-icpc07}
+D.~Poshyvanyk and A.~Marcus.
+\newblock {Combining formal concept analysis with information retrieval for concept location in source code}.
+\newblock In {\em ICPC'07}. IEEE CS, 2007.
+
+\bibitem{andy-icpc06}
+D.~Poshyvanyk, A.~Marcus, V.~Rajlich, Y.-G. Gueheneuc, and G.~Antoniol.
+\newblock {\em Combining probabilistic ranking and latent semantic indexing for feature identification}.
+\newblock In \emph{ICPC'06}. IEEE CS, 2006.
+
+\bibitem{liu07}
+D.~Liu, A.~Marcus, D.~Poshyvanyk, and V.~Rajlich.
+\newblock {\em Feature location via information retrieval based filtering of a single scenario execution trace}.
+\newblock In \emph{ASE'07}, pages 234--243. ACM, 2007.
+
+\bibitem{Raghavan04}
+S.~Raghavan, R.~Rohana, D.~Leon, A.~Podgurski, V.~Augustine.
+\newblock Dex: A semantic-graph differencing tool for studying changes in large
+  code bases.
+\newblock In {\em ICSM'04}, pages 188--197. IEEE CS, 2004.
+%pages 188--197
+
+\bibitem{Reiss08}
+S.~P. Reiss.
+\newblock Tracking source locations.
+\newblock In {\em ICSE'08}, pages 11--20, ACM, 2008.
+
+\bibitem{Robbes07}
+R.~Robbes.
+\newblock Mining a change-based software repository.
+\newblock In {\em MSR'07}, page~15. IEEE CS, 2007.
+
+\bibitem{Rysselberghe03}
+F.~V. Rysselberghe and S.~Demeyer.
+\newblock Reconstruction of successful software evolution using clone
+  detection.
+\newblock In {\em IWPSE'03}, page 126. IEEE CS, 2003.
+
+\bibitem{Tichy1984}
+W.~F. Tichy.
+\newblock The string-to-string correction problem with block moves.
+\newblock {\em ACM Transactions on Computer Systems}, 2(4):309--321, 1984.
+
+\bibitem{godfrey02}
+Q.~Tu and M.~W. Godfrey.
+\newblock An integrated approach for studying architectural evolution.
+\newblock In {\em IWPC'02}, page 127. IEEE CS, 2002.
+
+\bibitem{Weissgerber06}
+P.~Weissgerber and S.~Diehl.
+\newblock Identifying refactorings from source-code changes.
+\newblock In {\em ASE'06}, pp. 231--240. IEEE CS, 2006.
+
+\bibitem{Xing07:diffcatchup}
+Z.~Xing and E.~Stroulia.
+\newblock {API-Evolution Support with Diff-CatchUp}.
+\newblock {\em IEEE Trans. Softw. Eng.}, 33(12):818--836, 2007.
+
+\bibitem{Yang1991}
+W.~Yang.
+\newblock Identifying syntactic differences between two programs.
+\newblock {\em Software, Practice, Experience}, 21(7):739--755, 1991.
+
+\end{thebibliography}

@@ -1,0 +1,297 @@
+\section{Related Work}
+
+\vspace{0.05in}
+\noindent {\bf Origin Analysis.} Related research to {\tool} is {\em
+origin analysis}~\cite{godfrey02,sungkim-wcre05,godfrey05}, which aims
+to determine the original version of a program entity as software
+changes. The origin analysis tool from Kim, Pan, and Whitehead
+(KPW)~\cite{sungkim-wcre05} uses various similarity factors for
+matching two versions of the methods. The factors include the methods'
+names and signatures, caller/callee sets, textual contents, and
+complexity metrics. Comparing to KPW tool, {\tool} has several crucial
+advances. First, while comparing caller/callee sets of two methods in
+two versions, {\em KPW tool relies on name similarity of methods} in
+those sets. Thus, when both caller and callee are renamed, its
+matching would fail. {\tool} still works because it is based on the
+interaction similarity and on previously matched entities via
+iterative matching. Second, in addition to interaction-based matching,
+{\tool} is more advanced than KPW in {\em iterative matching}: {\tool}
+uses the knowledge from already-matched code entities to incrementally
+update the similarities of not-yet-matched entities for further
+matching. Therefore, {\tool} can rely on simple matching cases to
+resolve more complex matching such as the cases of renamed
+callers/callees. Third, {\tool} considers also inheritance and data
+relations, thus, can recover class matching, while KPW does not.
+Finally, to compare the methods' bodies, because KPW tool uses
+token-based clone detection in CCFinder~\cite{ccfinder}, it would
+often match a method $m$ to its deprecated one, rather than its
+replacement. {\tool} uses interaction similarity to match to the
+replacement, thus, provides better matching.
+
+%in adapting regression test cases.
+
+%{\tool} uses internal calling structure that capture better usage
+%similarity between methods.
+
+Another related work is BEAGLE~\cite{godfrey02}. To map two methods
+across two versions, it first computes internal similarity based on
+the metrics like Cyclomatic, S-, and D-Complexity. Then, it considers
+the ``calls'' and ``is-called-by'' relationships among two methods and
+then computes the similarity of calling structures between methods.
+%in which {\em it considers the methods with the same names in both
+%  versions as the matched methods}. 
+During computing the calling structure similarity, it first finds
+the methods with the name matching in two versions and then 
+%From each {\em name-matched} method, it 
+examines the callee methods and uses other name-matched methods to
+detect other matching methods. {\tool} directly computes the
+interaction similarity for matching two versions of a method.
+%
+%rather than name similarity. 
+Moreover, {\tool} also analyzes different kinds of interaction
+including usage sets of the methods, helping it to deal with the cases
+of renaming or refactored. In a later work, Godfrey and
+Zou~\cite{godfrey05} use origin analysis in BEAGLE~\cite{godfrey02}
+and consider refactoring patterns using calling relations. They also
+detect merged and split entities. We could improve {\tool} with this feature.
+
+%This is the current limitation of {\tool}.
+
+%Because BEAGLE is not quite well-suited for feature tracking due to
+%its name-based mapping approach, therefore, the result of their
+%technique for detecting merged and split entities could be affected.
+
+
+
+%{\tool} further analyzes the usage sets of those methods, despite
+%their name matching. Thus, {\tool} still works when methods are
+%renamed/refactored.
+
+%Another related work is BEAGLE~\cite{godfrey02}. To map two
+%methods across two versions, it first computes internal similarity
+%based on the metrics like Cyclomatic, S-, and D-Complexity. Then, it
+%computes the similarity of calling structures of two methods in which
+%{\em it considers the methods with the same names in both versions as
+%the matched methods}. From each {\em name-matched} method, it examines
+%callee methods and uses other name-matched methods to detect other
+%matching methods. {\tool} fundamentally differs from BEAGLE in that it
+%uses {\em the interaction similarity for matching two versions
+%of a method}, rather than name similarity. {\tool} further
+%analyzes the usage sets of those methods, despite their name
+%matching. Thus, {\tool} still works when methods are
+%renamed/refactored.
+
+Kim and Notkin~\cite{Kim07}'s LSdiff uses a rule inference algorithm
+to capture code changes at method-headers. Their later
+work~\cite{Kim09} infers complex rules to describe changes to
+classes/fields/methods, their containment relationships, and
+structural dependencies. Before the rule inferencing step, the first
+step (entity matching) in their tool is similar to KPW tool. Their
+resulting rules could be improved if LSdiff runs on the mapping
+results from our tool. Vdiff~\cite{kim10} outputs syntactic changes in
+a Verilog program and provides position-independent differencing.
+However, it cannot handle the cases that methods are both relocated
+and changed.
+
+% in term of internal implementations.
+
+%structure diff, calling structure diff
+
+\vspace{0.05in}
+\noindent {\bf API and Framework Adaptation.} {\tool} is related to
+API and framework adaptation approaches~\cite{semdiff08,catchup05}
+that recommend the adaptation changes to client code of some APIs when
+those APIs evolve. SemDiff~\cite{semdiff08} detects replaced API
+methods in a framework. First, the methods in two versions of the
+framework's code are mapped based on code structure similarity. Via
+those methods' bodies, SemDiff determines their callees. Then, it
+mines the {\em frequent replacements} of methods from those pairs of
+callers/callees and ranks them via a confidence metric. In contrast,
+our matching principle is based on the {\em interaction similarity} of
+two entities with others in the respective
+versions. LibSync~\cite{oopsla10} compares two versions in which AST's
+nodes are matched with both structures and names. It mines frequent
+adaptation patterns via detecting frequent graph edit operations
+between two usage graphs. CatchUp!~\cite{catchup05} records and stores
+refactoring changes made to APIs and then replay them to adapt client
+code. Diff-CatchUp~\cite{Xing2007:diffcatchup} automatically
+recognizes API changes of the reused framework and suggests plausible
+replacements based on working examples of the framework codebase.
+Chow and Notkin~\cite{Chow1996} proposed a method for a library
+maintainer annotates changed functions with rules for adaptation.
+
+% that are used to
+%generate tools that will adapt client code.
+
+
+%renaming, reordering, and implementation
+%changing.
+%system diff, Verilog diff
+
+%srcML, is an XML format that explicitly embeds abstract syntax within
+%the source code while preserving the documentary structure as dictated
+%by the developer.
+%srcDiff.  The meta-difference contains specific syntactic information
+%regarding the source-code changes.
+%A set of program differencing tools related to {\tool} is
+%semantic-based ones.
+
+\vspace{0.05in}
+\noindent {\bf Test-suite Augmentation and Adaptation.} Our tool will
+complement well to existing test-suite augmentation/adaptation
+tools~\cite{orso08,bert10,diffgen08}. Specifically, {\tool} could be
+used first to detect the matching of classes/methods after changes are
+made. Then, for each matched method/class, a test-suite augmentation
+tool such as MATRIX~\cite{orso08} can be applied to detect the
+fine-grained changes, to identify new/modified behaviors that are not
+adequately exercised by the existing test cases, and to guide
+developers in generating new test cases that exercise untested
+behaviors. Another tool, DiffGen~\cite{diffgen08}, takes two versions
+of a Java class, adds new branches so that behavioral differences
+between the two class versions are exposed, then uses a coverage-based
+test generation tool to generate test inputs for covering the added
+branches. DiffGen could use the matched class/method from {\tool} as
+its input.  BERT~\cite{bert10} helps developers identify regression
+faults when code is changed. BERT identifies behavioral differences
+between two versions through dynamic analysis by examining the changed
+parts of the code and running generated tests.
+
+\vspace{0.04in}
+\noindent {\bf Program Differencing.}  Several program differencing
+tools are
+semantics-based~\cite{Apiwattanapong04,Horwitz1990,Jackson1994}, which
+aim to detect semantic changes in a single program, rather than in
+the entire system as in {\tool}. JDiff~\cite{Apiwattanapong04} detects the
+differences between two versions by first matching their classes and
+methods with {\em similar names/signatures}. For each pair of
+name/signature-matched methods, it constructs enhanced control flow
+graphs (CFGs) and matches CFGs' nodes.
+%JDiff~\cite{Apiwattanapong04} detects the differences between two
+%versions $P$ and $P'$. JDiff first compares each class in $P$ with the
+%{\em similar-name class} in $P'$. JDiff then matches the methods in
+%that class in $P$ with the {\em methods having the same
+%name/signature} in the class in $P'$. For each pair of matched
+%methods, it constructs enhanced control flow graphs (CFGs) and matches
+%CFGs' nodes.
+JDiff is still name/signature-based for entity matching, and its goal
+of detecting fine-grained changes in the CFG is different than
+{\tool}'s. With a similar goal of detecting fine-grained changes
+within a method, Semantic diff~\cite{Jackson1994},
+%Tien
+Binkley {\em et al.}'s~\cite{Binkley1995},
+Horwitz's~\cite{Horwitz1990}, and Raghavan {\em et al.}'s
+approaches~\cite{Raghavan04} compare the corresponding program
+dependence graphs in two versions. None of them considers external
+interaction similarity.
+%%%ASE
+UMLDiff~\cite{xing05} reports design-level structural changes such as
+additions, removals, relocations, attributes' modifications of
+packages, classes, interfaces, methods, and fields.
+and the changes to entities' dependencies.
+%%%ASE
+With the focus on design level, Mehra {\em et al.}~\cite{grundy05}
+develop a visual differencing algorithm for design diagrams.
+% in Pounamu tool. 
+%%%Our tool has a different focus than design diagrams
+%%%differencing.
+%%% ASE
+
+Traditional program differencing techniques (Unix's and CVS's diff
+tools~\cite{Tichy1984}) are text-based in which they compare the lines
+of code without considering the program's structure or semantics.
+Ldiff~\cite{ldiff09} improves Unix diff by determining whether a line
+is changed or is the result of additions/removals. 
+Reiss' diff tool works on program token level~\cite{Reiss08}.
+Other advanced diff tools perform on program's Abstract Syntax Trees
+(ASTs)~\cite{Fluri07,Neamtiu05,Cottrell07}.
+%%% Hunt02}.
+%%%Tien: cdiff, Yang1991,
+Change Distilling~\cite{Fluri07} matches two ASTs by their nodes'
+names and then neighborhood's structure.  Cottrell {\em et
+al.}~\cite{Cottrell07} match {\em structural} correspondences between
+two classes.
+srcDiff~\cite{maletic04} explicitly embeds abstract syntax within
+source code with meta-difference containing syntactic information
+about code changes.  {\tool}'s usage similarity is at a higher level
+of semantics than those approaches.
+%
+{\tool} was built based on the prior work by Nguyen {\em et al.} on an
+interaction-based program differencing tool,
+iDiff~\cite{ase11-tool}. The key advances of {\tool} over iDiff
+include 
+%1) the richer set of interaction in {\tool} (Section~\ref{model}), 
+1) the iterative matching in measuring the similarity of interaction
+sets in Section~\ref{algosection} (iDiff does not match the entities
+iteratively), 2) the application of {\tool}'s matching algorithm in
+test case evolution, and 3) a new empirical evaluation on entity
+matching and test case repairing recommendation.
+
+%%%
+In brief, {\tool} has key differences over those program
+differencing approaches. First, they focus more on fine-grained
+changes within a method, while {\tool} matches the methods/classes
+across versions in an entire project.  Second, {\tool} examines not
+only the internal bodies of methods for similar interactions, but also
+their external interactions. 
+
+%Finally, unlike those approaches, {\tool} considers the methods having
+%same name/signature as matching candidates only, and further examines
+%them for true matching via other interaction-based criteria.
+
+\vspace{0.05in}
+\noindent {\bf Refactoring Recovery.}  Several approaches have been
+proposed to recover refactorings that were performed on a
+program~\cite{Weissgerber06,Dig06,
+Malpohl00,Antoniol04,Demeyer00,Xing07:diffcatchup}.
+%
+Dig {\em et al.}~\cite{Dig06} recover refactoring operations including
+renamed entities in which methods with similar Shingles codes are
+renamed/moved ones. 
+%%Shingles is an integer encoding scheme for tokens. 
+%%Among the detection of several refactorings, 
+Weissgerber and Diehl~\cite{Weissgerber06} detect renamed/moved
+methods by using clone detection.
+% as in~\cite{Rysselberghe03}.
+%Some approaches describe the changes of a program via
+%operations~\cite{Asklund'04,Robbes07}.
+All above approaches do not take into account the entities'
+interactions.
+% as in {\tool}.
+
+
+
+
+
+
+%it generates a large number of test in- puts that focus on the changed
+%parts of the code. Second, it runs the generated test inputs on the
+%old and new versions of the code and identi?es differences in the
+%tests behavior. Third, it analyzes the identi?ed differences and
+%presents them to the developers. By fo- cusing on a subset of the code
+%and leveraging differential behavior, BERT can provide developers with
+%more detailed information than traditional regression testing
+%approaches- approaches that rely ex- clusively on existing test
+%suites
+
+%BERT, a tool for helping developers identify regression faults that
+%they may have introduced when modifying their code. BERT is based on
+%the concept of behavioral regression testing: given two versions of a
+%program, BERT identi?es behavioral differences between the two
+%versions through dynamic analysis
+
+%to assess the adequacy of an existing test suite,
+%In previous work, we proposed MATRIX, a technique for
+%test-suite augmentation based on dependence analysis and partial
+%symbolic execution. In this paper, we present the next step of our
+%work, where we (1) improve the effectiveness of our technique by
+%identifying all relevant change-propagation paths, (2) extend the
+%technique to handle multiple and more complex changes
+
+%Given two versions of a Java class, our approach instruments the code
+%by adding new branches such that if these branches can be covered by a
+%test generation tool, behavioral differences between the two class
+%versions are exposed. DiffGen then uses a coverage-based test
+%generation tool to generate test inputs for covering the added
+%branches to expose behavioral differences.
+
+

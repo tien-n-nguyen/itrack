@@ -1,0 +1,790 @@
+
+%% bare_conf.tex
+%% V1.3
+%% 2007/01/11
+%% by Michael Shell
+%% See:
+%% http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.7 or later) with an IEEE conference paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
+%% and
+%% http://www.ieee.org/
+
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE!
+%% User assumes all risk.
+%% In no event shall IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%
+%% File list of work: IEEEtran.cls, IEEEtran_HOWTO.pdf, bare_adv.tex,
+%%                    bare_conf.tex, bare_jrnl.tex, bare_jrnl_compsoc.tex
+%%*************************************************************************
+
+% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
+% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
+% *** with production work. IEEE's font choices can trigger bugs that do  ***
+% *** not appear when using other class files.                            ***
+% The testflow support page is at:
+% http://www.michaelshell.org/tex/testflow/
+
+
+
+% Note that the a4paper option is mainly intended so that authors in
+% countries using A4 can easily print to A4 and see how their papers will
+% look in print - the typesetting of the document will not typically be
+% affected with changes in paper size (but the bottom and side margins will).
+% Use the testflow package mentioned above to verify correct handling of
+% both paper sizes by the user's LaTeX system.
+%
+% Also note that the "draftcls" or "draftclsnofoot", not "draft", option
+% should be used if it is desired that the figures are to be displayed in
+% draft mode.
+%
+\documentclass[10pt, conference]{IEEEtran}
+% Add the compsocconf option for Computer Society conferences.
+%
+% If IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it like:
+% \documentclass[conference]{../sty/IEEEtran}
+
+
+
+
+
+% Some very useful LaTeX packages include:
+% (uncomment the ones you want to load)
+
+
+% *** MISC UTILITY PACKAGES ***
+%
+%\usepackage{ifpdf}
+% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
+% compilation based on whether the output is pdf or dvi.
+% usage:
+% \ifpdf
+%   % pdf code
+% \else
+%   % dvi code
+% \fi
+% The latest version of ifpdf.sty can be obtained from:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/
+% Also, note that IEEEtran.cls V1.7 and later provides a builtin
+% \ifCLASSINFOpdf conditional that works the same way.
+% When switching from latex to pdflatex and vice-versa, the compiler may
+% have to be run twice to clear warning/error messages.
+
+
+
+
+
+
+% *** CITATION PACKAGES ***
+%
+%\usepackage{cite}
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 4.0 (2003-05-27) and later if using hyperref.sty. cite.sty does
+% not currently provide for hyperlinked citations.
+% The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/cite/
+% The documentation is contained in the cite.sty file itself.
+
+
+
+
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+  % \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/graphics/
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found as epslatex.ps or
+% epslatex.pdf at: http://www.ctan.org/tex-archive/info/
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+
+
+
+% *** MATH PACKAGES ***
+%
+%\usepackage[cmex10]{amsmath}
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics. If using
+% it, be sure to load this package with the cmex10 option to ensure that
+% only type 1 fonts will utilized at all point sizes. Without this option,
+% it is possible that some math symbols, particularly those within
+% footnotes, will be rendered in bitmap form which will result in a
+% document that can not be IEEE Xplore compliant!
+%
+% Also, note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+%\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks as IEEEtran.cls normally
+% does. amsmath.sty is already installed on most LaTeX systems. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/amslatex/math/
+
+
+
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+%\usepackage{algorithmic}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithms/
+% There is also a support site at:
+% http://algorithms.berlios.de/index.html
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithmicx/
+
+
+
+
+% *** ALIGNMENT PACKAGES ***
+%
+%\usepackage{array}
+% Frank Mittelbach's and David Carlisle's array.sty patches and improves
+% the standard LaTeX2e array and tabular environments to provide better
+% appearance and additional user controls. As the default LaTeX2e table
+% generation code is lacking to the point of almost being broken with
+% respect to the quality of the end results, all users are strongly
+% advised to use an enhanced (at the very least that provided by array.sty)
+% set of table tools. array.sty is already installed on most systems. The
+% latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/tools/
+
+
+%\usepackage{mdwmath}
+%\usepackage{mdwtab}
+% Also highly recommended is Mark Wooding's extremely powerful MDW tools,
+% especially mdwmath.sty and mdwtab.sty which are used to format equations
+% and tables, respectively. The MDWtools set is already installed on most
+% LaTeX systems. The lastest version and documentation is available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/mdwtools/
+
+
+% IEEEtran contains the IEEEeqnarray family of commands that can be used to
+% generate multiline equations as well as matrices, tables, etc., of high
+% quality.
+
+
+%\usepackage{eqparbox}
+% Also of notable interest is Scott Pakin's eqparbox package for creating
+% (automatically sized) equal width boxes - aka "natural width parboxes".
+% Available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/eqparbox/
+
+
+
+
+
+% *** SUBFIGURE PACKAGES ***
+%\usepackage[tight,footnotesize]{subfigure}
+% subfigure.sty was written by Steven Douglas Cochran. This package makes it
+% easy to put subfigures in your figures. e.g., "Figure 1a and 1b". For IEEE
+% work, it is a good idea to load it with the tight package option to reduce
+% the amount of white space around the subfigures. subfigure.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at:
+% http://www.ctan.org/tex-archive/obsolete/macros/latex/contrib/subfigure/
+% subfigure.sty has been superceeded by subfig.sty.
+
+
+
+%\usepackage[caption=false]{caption}
+%\usepackage[font=footnotesize]{subfig}
+% subfig.sty, also written by Steven Douglas Cochran, is the modern
+% replacement for subfigure.sty. However, subfig.sty requires and
+% automatically loads Axel Sommerfeldt's caption.sty which will override
+% IEEEtran.cls handling of captions and this will result in nonIEEE style
+% figure/table captions. To prevent this problem, be sure and preload
+% caption.sty with its "caption=false" package option. This is will preserve
+% IEEEtran.cls handing of captions. Version 1.3 (2005/06/28) and later
+% (recommended due to many improvements over 1.2) of subfig.sty supports
+% the caption=false option directly:
+%\usepackage[caption=false,font=footnotesize]{subfig}
+%
+% The latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/
+% The latest version and documentation of caption.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/caption/
+
+
+
+
+% *** FLOAT PACKAGES ***
+%
+%\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure. The latest version and documentation can be found at:
+% http://www.ctan.org/tex-archive/macros/latex/base/
+
+
+
+%\usepackage{stfloats}
+% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
+% LaTeX2e). It also provides a command:
+%\fnbelowfloat
+% to enable the placement of footnotes below bottom floats (the standard
+% LaTeX2e kernel puts them above bottom floats). This is an invasive package
+% which rewrites many portions of the LaTeX2e float routines. It may not work
+% with other packages that modify the LaTeX2e float routines. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/sttools/
+% Documentation is contained in the stfloats.sty comments as well as in the
+% presfull.pdf file. Do not use the stfloats baselinefloat ability as IEEE
+% does not allow \baselineskip to stretch. Authors submitting work to the
+% IEEE should note that IEEE rarely uses double column equations and
+% that authors should try to avoid such use. Do not be tempted to use the
+% cuted.sty or midfloat.sty packages (also by Sigitas Tolusis) as IEEE does
+% not format its papers in such ways.
+
+
+
+
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+%
+%\usepackage{url}
+% url.sty was written by Donald Arseneau. It provides better support for
+% handling and breaking URLs. url.sty is already installed on most LaTeX
+% systems. The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/misc/
+% Read the url.sty source comments for usage information. Basically,
+% \url{my_url_here}.
+
+
+
+
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+%\usepackage{ulem}
+%\usepackage{latex8}
+%\usepackage{times}
+\usepackage{epsf}
+%\usepackage[utf8]{vietnam}
+%\usepackage{latexsym}
+%\usepackage{tweaklist}
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{booktabs}
+\usepackage{ctable}
+\usepackage{listings}
+\usepackage{alltt}
+%\usepackage{fvrb-ex}
+\lstset{basicstyle=\scriptsize\sffamily,language=Pascal,tabsize=2,frame=single,breaklines=true,columns=flexible,mathescape=true,showspaces=false,showstringspaces=false,showtabs=false}
+
+\begin{document}
+
+\newtheorem{Definition}{Definition}
+\newtheorem{Claim}{Claim}
+\newtheorem{Lemma}{Lemma}
+\newtheorem{Theorem}{Theorem}
+\newtheorem{Property}{Property}
+\newcommand{\code}[1]{{\footnotesize\textsf{#1}}}
+
+\newcommand{\tool} {iTrack}
+\newcommand{\concept} {feature}
+\newcommand{\users} {users}
+\newcommand{\lTypes}{lTypes}
+
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{Interaction-based Tracking of Program Entities for Repairing
+Method Calls in Existing Test Cases}
+
+
+% author names and affiliations
+% use a multiple column layout for up to two different
+% affiliations
+
+\author{\IEEEauthorblockN{Hoan Anh Nguyen, Tung Thanh Nguyen, Hung V. Nguyen, and Tien N. Nguyen}
+\IEEEauthorblockA{Electrical and Computer Engineering Department\\
+Iowa State University \\
+\{hoan,tung,hungnv,tien\}@iastate.edu}}
+
+% conference papers do not typically use \thanks and this command
+% is locked out in conference mode. If really needed, such as for
+% the acknowledgment of grants, issue a \IEEEoverridecommandlockouts
+% after \documentclass
+
+% for over three affiliations, or if they all won't fit within the width
+% of the page, use this alternative format:
+%
+%\author{\IEEEauthorblockN{Michael Shell\IEEEauthorrefmark{1},
+%Homer Simpson\IEEEauthorrefmark{2},
+%James Kirk\IEEEauthorrefmark{3},
+%Montgomery Scott\IEEEauthorrefmark{3} and
+%Eldon Tyrell\IEEEauthorrefmark{4}}
+%\IEEEauthorblockA{\IEEEauthorrefmark{1}School of Electrical and Computer Engineering\\
+%Georgia Institute of Technology,
+%Atlanta, Georgia 30332--0250\\ Email: see http://www.michaelshell.org/contact.html}
+%\IEEEauthorblockA{\IEEEauthorrefmark{2}Twentieth Century Fox, Springfield, USA\\
+%Email: homer@thesimpsons.com}
+%\IEEEauthorblockA{\IEEEauthorrefmark{3}Starfleet Academy, San Francisco, California 96678-2391\\
+%Telephone: (800) 555--1212, Fax: (888) 555--1212}
+%\IEEEauthorblockA{\IEEEauthorrefmark{4}Tyrell Inc., 123 Replicant Street, Los Angeles, California 90210--4321}}
+
+
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+
+\begin{abstract}
+%Regression testing aims to uncover the defects in previously existing
+%functionality of a system after changes have been made.
+%evelopers
+%typically run the new version of the program against its existing test
+%suite to validate that the changes made on the program did not
+%introduce unintended side effects
+
+%When a program is modi?ed during software evolution, developers
+%typically run the new version of the program against its existing test
+%suite to validate that the changes made on the program did not
+%introduce unintended side effects (i.e., regression faults). This kind
+%of regression testing can be effective in identifying some regression
+%faults, but it is limited by the quality of the existing test
+%suite. Due to the cost of testing, developers build test suites by
+%?nding acceptable tradeoffs between cost and thoroughness of the
+%tests. As a result, these test suites tend to exercise only a small
+%subset of the program’s functionality and may be inadequate for
+%testing the changes in a program.
+
+After changes are made to a system, developers typically perform
+regression testing to uncover the regression faults in previously
+existing functionality of the system. 
+%Developers often execute the new
+%version of the system against its existing test cases to make sure
+%that those changes did not introduce unintended defects. 
+However,
+during software evolution, the program entities (i.e. classes/methods)
+realizing such functionality might be modified/replaced by
+other entities. Therefore, in the new version, some existing test
+cases containing obsolete classes/method calls might be broken
+or might not test the intended functionality. To repair the broken 
+method calls in those test cases, for each obsolete class/method, a 
+tester needs to find the correspond entity providing the same/similar 
+function or having the same role in the new version.
+%%To adapt those test cases, for those obsolete classes/methods, a
+%%tester needs to find the corresponding ones that provide the
+%%same/similar functionality or have the same roles in the new version.
+%Regression testing aims to uncover the defects in existing
+%functionality of a system after changes have been made. As the system
+%evolves, its program entities (i.e. classes/methods) that realize such
+%functionality also change. Some entities are replaced by others. Thus,
+%some previously run test cases need to be adapted in accordance with
+%such replacements of program entities. To perform such adaptation, for
+%a program entity in the previous version,  a tester needs to find its
+%peer, i.e. the corresponding entitity that provides the same/similar
+%functionality or has the same role in the new version.
+To automate that task, in this paper, we propose {\tool}, a novel tool 
+for matching program entities across versions, which mainly relies on 
+their interactions
+%and dependencies
+in the system. The key philosophy of {\tool} is that the role and
+functionality of an entity correlate with its interactions with other
+entities (e.g. how it uses or is used by others). Two entities in two
+versions are matched based on the similarity of their interactions
+with other entities in respective versions via our novel iterative
+matching algorithm. Our empirical evaluation shows that {\tool} is
+able to accurately identify the previous test cases that need to be
+adapted in accordance with the replacements of entities and provide
+such matching to support repairing the broken method calls.
+
+\end{abstract}
+
+%\begin{IEEEkeywords}
+%Origin Analysis; Adaptation; Test Cases;
+%\end{IEEEkeywords}
+
+%Regression Testing; Program Dependencies;
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+\input{intro}
+\input{example}
+\input{model}
+\input{algo}
+\input{eval}
+%\input{case}
+\input{relatedwork}
+
+\section{Conclusions}
+%%After changes have been made to the system, regression testing is
+%%often performed to help detect the errors or regressions in the
+%%already existing functionality.
+
+As the system evolves, the program entities that realize its
+functionality are also changed. Therefore, in regression testing, some
+previously run test cases need to be adapted in accordance with the
+replacements of classes/methods. Based on the philosophy that the role
+and/or functionality of an entity correlate with its interaction to
+other entities, in this paper, we propose {\tool}, a matching approach
+which mainly relies on the interactions between the entities of interest.
+%{\tool} represents a system at any version as an attributed
+%graph, in which the nodes represent program entities, the edges
+%represent the interactions/dependencies between the nodes, and the
+%attributes represent the information of corresponding entities, such
+%as their names/signatures, or other information. Then,
+%%%The entities between two versions are matched based on the similarity
+%%%of their interactions/dependencies via an approximated, iterative
+%%%matching algorithm.
+Evaluation on real-world systems shows that {\tool} can match entities 
+of the same role/functionality with high correctness and efficiency.
+higher correctness and efficiency than other alternatives. 
+In addition, {\tool} is also able to accurately
+identify the previous test cases that need to be adapted in accordance
+with the replacements of entities and provide such matching to
+facilitate the repairing of existing test cases.
+
+% use section* for acknowledgement
+%\section*{Acknowledgment}
+%
+%The authors would like to thank...
+%more thanks here
+
+\bibliographystyle{abbrv}
+
+{\scriptsize
+%\bibliography{demo11}
+\begin{thebibliography}{10}
+
+\bibitem{lsh}
+A.~Andoni and P. Indyk.
+\newblock E2LSH 0.1 User manual.
+\newblock http://web.mit.edu/andoni/www/LSH/manual.pdf.
+
+\bibitem{Apiwattanapong04}
+T.~Apiwattanapong, A.~Orso, and M.~J. Harrold.
+\newblock A differencing algorithm for object-oriented programs.
+\newblock In {\em ASE'04}, IEEE CS.
+
+%: Proceedings of the 19th IEEE International
+%  Conference on Automated Software Engineering}, pages 2--13, Washington, DC,
+%  USA, 2004. IEEE Computer Society.
+
+%Tien
+%\bibitem{Binkley1995}
+%D.~Binkley, S.~Horwitz, and T.~Reps.
+%\newblock Program integration for languages with procedure calls.
+%\newblock {\em ACM Transactions on Software Engineering and Methodology},
+%  4(1):3--35, 1995.
+
+%ASE
+%%%\bibitem{ldiff09}
+%%%G.~Canfora, L.~Cerulo, and M.~Di~Penta.
+%%%\newblock Ldiff: An enhanced line differencing tool.
+%%%\newblock In {\em ICSE'09}, pp. 595--598. IEEE CS, 2009.
+
+%Cut-Fri
+\bibitem{Cottrell07}
+R.~Cottrell, J.~J.~C. Chang, R.~J. Walker, and J.~Denzinger.
+\newblock Determining detailed structural correspondence for generalization
+  tasks.
+\newblock In {\em ESEC-FSE '07}, pages 165--174, ACM.
+
+\bibitem{Chow1996}
+K.~Chow and D.~Notkin.
+\newblock Semi-automatic update of applications in response to library changes.
+\newblock In {\em ICSM'96}, IEEE CS.
+
+\bibitem{semdiff08}
+B.~Dagenais and M.~P. Robillard.
+\newblock Recommending adaptive changes for framework evolution.
+\newblock In {\em ICSE'08}. ACM, 2008.
+
+\bibitem{Dig06}
+D.~Dig and R.~Johnson.
+\newblock Automated detection of refactorings in evolving components.
+\newblock In {\em ECOOP'06}. Springer, 2006.
+
+\bibitem{kim10}
+A.~Duley, C.~Spandikow, M.~Kim.
+\newblock A Program Differencing Algorithm for Verilog HDL.
+\newblock  In {\em ASE'10}. IEEE CS, 2010.
+
+\bibitem{Fluri07}
+B.~Fluri, M.~W\"ursch, M.~Pinzger, and H.~C. Gall.
+\newblock Change distilling---tree differencing for fine-grained source code
+  change extraction.
+\newblock {\em IEEE TSE}, 33(11):18, Nov. 2007.
+
+\bibitem{godfrey05}
+M.~W. Godfrey and L.~Zou.
+\newblock Using origin analysis to detect merging and splitting of source code
+  entities.
+\newblock {\em IEEE Trans. Softw. Eng.}, 31(2):166--181, 2005.
+
+\bibitem{Horwitz1990}
+S.~Horwitz.
+\newblock Identifying the semantic and textual differences between two versions
+  of a program.
+\newblock In {\em PLDI'90}, ACM Press.
+
+%: Proceedings of the ACM SIGPLAN 1990 conference on
+%  Programming language design and implementation}, pages 234--245, New York,
+%  NY, USA, 1990. ACM.
+
+%%%ASE
+%%%\bibitem{Hunt02}
+%%%J.~J. Hunt and W.~F. Tichy.
+%%%\newblock Extensible language-aware merging.
+%%%\newblock In {\em ICSM'02}, IEEE CS, 2002.
+
+%Final
+\bibitem{Jackson1994}
+D.~Jackson and D.~A. Ladd.
+\newblock Semantic diff: A tool for summarizing the effects of modifications.
+\newblock In {\em ICSM'94}, IEEE.
+
+%pages 243--252, IEEE CS.
+
+\bibitem{bert10}
+W.~Jin, A.~Orso, and T.~Xie.
+\newblock Automated behavioral regression testing.
+\newblock In {\em ICST'10}, IEEE CS.
+
+%Tien
+%%%\bibitem{cdiff}
+%%%J.~Grass.
+%%%\newblock {A Syntax Directed Differencer for C++ Programs}.
+%%%\newblock In {\em Proceedings of the Usenix C++ Conference}, 1992.
+
+\bibitem{catchup05}
+J.~Henkel and A.~Diwan.
+\newblock {CatchUp!: capturing and replaying refactorings to support API
+  evolution}.
+\newblock In {\em ICSE'05}, ACM Press.
+
+\bibitem{ccfinder}
+T.~Kamiya, S.~Kusumoto, and K.~Inoue.
+\newblock CCFinder: a multilinguistic token-based code clone detection system
+  for large scale source code.
+\newblock {\em IEEE TSE}, 28(7), 2002.
+
+%28(7):654--670, 2002.
+
+\bibitem{Kim09}
+M.~Kim and D.~Notkin.
+\newblock Discovering and representing systematic code changes.
+\newblock In {\em ICSE'09}, pp. 309--319. IEEE CS.
+
+
+\bibitem{Kim07}
+M.~Kim, D.~Notkin, and D.~Grossman.
+\newblock Automatic inference of structural changes for matching across program
+  versions.
+\newblock In {\em ICSE'07}, pp. 333--343, IEEE CS, 2007.
+
+\bibitem{sungkim-wcre05}
+S.~Kim, K.~Pan, and E.~J. Whitehead, Jr.
+\newblock When functions change their names: Automatic detection of origin
+  relationships.
+\newblock In {\em WCRE'05}, pp. 143--152. IEEE CS, 2005.
+
+%: Proceedings of the 12th Working Conference on
+%  Reverse Engineering}, pages 143--152. IEEE CS, 2005.
+
+%Tien
+\bibitem{grundy05}
+A.~Mehra, J.~Grundy, and J.~Hosking.
+\newblock A generic approach to supporting diagram differencing and merging for collaborative
+design.
+\newblock In {\em ASE'05}, pp. 204-213, 2005.
+
+\bibitem{Neamtiu05}
+I.~Neamtiu, J.~Foster, and M.~Hicks.
+\newblock Understanding source code evolution using abstract syntax tree
+  matching.
+\newblock In {\em MSR'05}.
+
+%%%\bibitem{maletic04}
+%%%J. I.~Maletic and  M. L.~Collard.
+%%%\newblock Supporting Source Code Difference Analysis.
+%%%\newblock In {\em ICSM'04}, pp. 210--219. IEEE CS, 2004.
+
+%Final
+\bibitem{oopsla10}
+H.~A. Nguyen, T.~T. Nguyen, G.~Wilson, A.~T. Nguyen, M.~Kim, and T.~N. Nguyen.
+\newblock A graph-based approach to api usage adaptation.
+\newblock In {\em OOPSLA '10}. ACM, 2010.
+
+\bibitem{Raghavan04}
+S.~Raghavan, R.~Rohana, D.~Leon, A.~Podgurski, and V.~Augustine.
+\newblock Dex: A semantic-graph differencing tool for studying changes in large
+  code bases.
+\newblock In {\em ICSM'04}, IEEE CS.
+
+%: Proceedings of the 20th IEEE International
+%  Conference on Software Maintenance}, pages 188--197, Washington, DC, USA,
+%  2004. IEEE Computer Society.
+
+\bibitem{Reiss08}
+S.~P. Reiss.
+\newblock Tracking source locations.
+\newblock In {\em ICSE'08}, ACM Press.
+
+%: Proceedings of the 30th International Conference on
+%  Software Engineering}, pages 11--20, New York, NY, USA, 2008. ACM.
+
+\bibitem{orso08}
+R.~Santelices, P.~K.~Chittimalli, T.~Apiwattanapong, A.~Orso,
+M.J.~Harrold.
+\newblock Test-suite Augmentation for Evolving Software.
+\newblock In {\em ASE'08}, IEEE.
+
+\bibitem{diffgen08}
+K.~Taneja and T.~Xie.
+\newblock DiffGen: Automated Regression Unit-Test Generation.
+\newblock In {\em ASE'08}, IEEE CS.
+
+%ASE
+%%%\bibitem{Tichy1984}
+%%%W.~F. Tichy.
+%%%\newblock The string-to-string correction problem with block moves.
+%%%\newblock {\em ACM Trans. on Computer Systems}, 2(4):309--321,1984.
+
+\bibitem{godfrey02}
+Q.~Tu and M.~W. Godfrey.
+\newblock An integrated approach for studying architectural evolution.
+\newblock In {\em IWPC'02}, pp. 127--136. IEEE CS.
+
+%: Proceedings of the 10th International Workshop on
+%  Program Comprehension}, page 127. IEEE CS, 2002.
+
+\bibitem{Weissgerber06}
+P.~Weissgerber and S.~Diehl.
+\newblock Identifying refactorings from source-code changes.
+\newblock In {\em ASE'06}, pp. 231--240, IEEE CS, 2006.
+
+%: Proceedings of the 21st IEEE/ACM International
+%  Conference on Automated Software Engineering}, pages 231--240, Washington,
+%  DC, USA, 2006. IEEE Computer Society.
+
+%ASE
+%%%\bibitem{xing05}
+%%%Z.~Xing and E.~Stroulia.
+%%%\newblock UMLDiff: An algorithm for object-oriented design differencing.
+%%%\newblock In {\em ASE'05}, ACM, 2005.
+
+\bibitem{Xing2007:diffcatchup}
+Z.~Xing and E.~Stroulia.
+\newblock API-evolution support with Diff-Catchup.
+\newblock {\em IEEE Trans. Softw. Eng.}, 33(12):818--836, 2007.
+
+%Tien
+%%%\bibitem{Yang1991}
+%%%W.~Yang.
+%%%\newblock Identifying syntactic differences between two programs.
+%%%\newblock {\em Software, Practice, Experience}, 21(7):739--755, 1991.
+
+\end{thebibliography}
+}
+
+\end{document}

@@ -1,0 +1,278 @@
+\section{Formulation}
+\label{model}
+
+\subsection{Key Concepts}
+
+This section presents our model to formulate the tracking problem of
+program entities.
+%%ASE
+%% for adapting regression test cases. 
+In our model, a \emph{system} is represented as a set of
+{\bf program entities} (\eg classes, methods) with the
+{\bf attributes} (\eg name/interface information), and the
+%%ASE
+%%\emph{relations} and 
+{\bf interaction} among those entities (\eg inheritance, invocation,
+and collaboration). \emph{Entity tracking} is applied by matching each
+entity in the previous version to at most one entity in the next
+version. The matching is based on the \emph{similarity} between their
+entities. Such similarity is calculated via the weighted sum of the
+similarity values of the {\em attributes} and the \emph{interaction}
+%%and relations
+associated with the entities. 
+%
+Next, we will describe in detail the key concepts in {\tool}, which
+was adapted and extended from the program differencing tool,
+iDiff~\cite{ase11-tool}.
+
+%
+%entities, attributes, interaction, and the formulation of the matching
+%conditions as well as the similarity measurements.
+
+% between entities.
+
+%\subsection{Entity, Attribute, Relation and Interaction}
+\subsection{Entity, Attribute, and Interaction}
+
+%Each entity has a set of attribute for signature, inheritance and collaboration attributes for interaction with other entities.
+
+{\tool} is interested in tracking two types of entities: classes
+and methods. The attributes
+%%ASE
+%%relations, 
+and interaction of the entities reflect three main kinds of
+interaction among entities in a system: method
+invocation, data access, and inheritance. {\bf The attributes
+and interaction of a class $C$ include}:
+
+\begin{itemize}
+
+\item {\bf Its signature}, containing both the package's and the
+  class names. The term \emph{simple name} is used to refer to the
+  class name. For example,
+  \code{jfreechart.chart.labels.XY\-ItemLabelGenerator} is the
+  signature of a class. The corresponding simple name is
+  \code{XYItemLabelGenerator};
+
+\item {\bf Inheritance}: $C$ has the attribute
+  \code{SuperClass}($C$) to represent a set of classes from which it
+  inherits (super-classes), and the attribute \code{SubClass}($C$)
+  for the classes/interfaces that inherit/implement $C$ (sub-classes);
+
+\item {\bf Collaboration}: $C$ has the attribute
+  \code{Container}($C$) that is the set of classes which declare $C$ as
+  a type of their field(s) or have $C$ in their methods'
+  signatures. The attribute, \code{Containee}($C$), is the set of
+  classes having $C$ as one of their containers, \ie the classes that
+  are declared as the types of fields of $C$ or are in one of the
+  methods' signatures of $C$. The attribute \code{User}($C$) contains
+  the methods that use $C$ in their bodies.
+
+\end{itemize}
+
+\noindent For Java, we consider an interface as an abstract class. {\bf The
+attributes and relations/interaction of a method $m$ include}:
+
+\begin{itemize}
+
+\item {\bf Its signature}, containing the package, class, and method's
+names, the list of parameter types and the return type. The term {\em
+simple name} is used to refer to the combination of class and
+method's names in the form of \code{Class.Method}. For example,
+\code{DragNDropTool.setDragOn} is the simple name of the method in
+Example 2;
+
+%For example here is an signature: \code{long org.jfree.data.xy.XYDatasetTableModel.datasetChanged(long ?org.jfree.data.general.DatasetChangeEvent)} [Tung: please provide a better example]
+
+\item {\bf Inheritance}: $m$ has two attributes of this type.
+\code{Overrider}($m$) is the set of methods that override $m$, and
+\code{Overridee}($m$) includes the ones that $m$ overrides;
+
+\item {\bf Collaboration}: $m$ has three attributes of
+this type. \code{Caller}($m$) contains the methods that call $m$,
+while \code{Callee}($m$) is the set of methods that are called within
+$m$'s body. \code{Local}($m$) is the set of classes that are used in
+the body of $m$ (\ie local types).
+
+\end{itemize}
+
+In {\tool}, the entities, their attributes, relations, and
+interaction are represented as an attributed, directed multi-graph,
+called {\bf Interaction Graph} (IG) in which
+
+- A node represents a class or a method. The label of each node is the
+  corresponding entity's signature;
+
+- Each type of interaction existing between two entities is
+  represented as an edge connecting two nodes.
+
+\subsection{Tracking and Similarity}
+
+Each version of the system is represented by an interaction
+graph. Entity tracking between two versions aims to match each entity
+in one graph of a version to another entity in the other graph of the
+later version. 
+%Our assumption is that the role of entities and their
+%interaction within the system are less likely to change than
+%their names or concrete implementations through evolution. 
+To track an entity during evolution, we could rely on its role and
+interaction with other entities in the system, in addition to names or
+implementation. Thus, our matching is mainly based on the similarity
+of interaction of the entities, while also takes other measurement
+criteria into account to reduce the number of comparisons among
+entities.
+
+%enrich the sets of candidates.
+
+\begin{Definition}[{\bf Matched entities}]
+An entity $u$ in version 1 is matched to an entity $u'$ in version 2 of the system, denoted by $u \equiv u'$, if their interaction similarity, denoted by $sim(u,u')$, is maximal and is sufficiently large with respect to a pre-defined
+threshold, \ie $sim(u,u') \rightarrow max$ and $sim(u,u') \geq
+\sigma$.
+\end{Definition}
+
+Because an entity from version 1 must be matched to at most one entity
+in version 2, {\tool} chooses the matched entities with highest
+similarity of interaction. In the case that an entity has the same
+interaction similarity with more than one other entities, the
+similarity in their names will be used.
+
+\begin{Definition}[{\bf Name similarity}]
+The name similarity between two entities, denoted by $nsim(u,u')$, is
+measured as the ratio between the length of the longest common
+sub-sequence (LCS) and the average length of their simple names.
+\end{Definition}
+
+To compute name similarity, {\tool} first breaks two names into
+two sequences of tokens based on Hungarian or CamelCase notations,
+then applies LCS on two sequences. For example,
+$nsim$(\code{setDragSourceActive},\code{setDragOn}) = 2/3.5 = 0.57.
+
+\begin{Definition}[{\bf Interaction similarity}]
+The interaction similarity between two entities in two versions is the
+weighted sum of the similarity of all of their interaction sets and is
+computed~as
+$$sim(u,u') = \sum_i{\alpha_i*ssim(I_i(u),I_i(u'))}$$ where
+$\alpha_i$s are the non-negative weights such that $\sum_i{\alpha_i} =
+1$.
+\end{Definition}
+
+In this formula, each set $I_i(u)$ is an {\em interaction set}
+of~$u$. It is a set of entities corresponding to one kind of
+interaction associated with $u$. Entity $u$ can have multiple
+interaction sets. 
+
+If $u$ is a class, its interaction sets include \code{SuperClass}($u$),
+\code{SubClass}($u$), \code{Containee}($u$), \code{Container}($u$) and
+\code{Users}($u$). If $m$ is a method, its interaction sets include
+\code{Caller}($m$), \code{Callee}($m$), \code{Local}($m$),
+\code{Overrider}($m$), and \code{Overridee}($m$).  Each of such
+interaction for $u$ will be compared with the corresponding
+interaction set for $u'$ in the new version. To compare two sets $P$
+and $P'$, we define $ssim(P,P')$ as follows:
+
+%is the similarity measurement of two sets $P$ and $P'$, which is
+%defined as follows:
+
+\begin{Definition}[{\bf Set similarity}]
+The similarity between two sets of entities $P$ and $P'$ is the ratio
+between the number of their matched entities and the total number of their
+entities:
+$$ssim(P,P') = \frac {2*|P \otimes P'|} {|P| + |P'|}$$
+\end{Definition}
+
+$P \otimes P'$ denotes the {\em matched subset} of $P$ and $P'$,
+covering all matched entities in $P$ and $P'$. Definition~4 means
+that $P$ and $P'$ will be more similar if they contain more matched
+entities. Formally, the matched subset is defined as
+
+\begin{Definition}[{\bf Matched subset}]
+The matched subset of two sets of entities $P$ and $P'$ is the list of pairs of their matched entities, i.e. $P \otimes P' = \{(u \in P, u' \in P') |u \equiv u\}$.
+\end{Definition}
+
+%The intuition of this definition is that, the larger the number of
+%common entities between $P$ and $P'$ is, the more they are
+%similar. Conventional wisdom would choose the set of common entities
+%as the intersection set of $P$ and $P'$. However, $P$ and $P'$ are
+%sets of entities between two versions, which might have changed
+%entities. Therefore, to {\em take the changes of entities into
+%consideration}, we define the {\em common entities of $P$ and $P'$} as
+%the following
+
+Let us take Fig.~\ref{drag} to show an example of the similarity
+between two sets of $I$=\code{Callers}(\code{setDragSourceActive}) and
+$I'$=\code{Callers}(\code{setDragOn}). Assume that, we could match
+\code{active} to \code{active}, and \code{deactivate} to
+\code{deactivate} in two versions of class \code{DragNDropTool}, then
+their matched subset contains those two pairs, $ssim(I,I')$=
+(2*2)/(2+2) = 1.0.
+
+%Assuming that at the time of computing for these two sets, {\tool}
+%already had the mapping between the classes that have same names, then
+%$ssim(I_1,I_2)=2/6=0.33$.
+%Now given that more matchings are found between the classes whose
+%names contain \code{ItemLabel} and \code{ToolTip}, then
+%$ssim(I_1,I_2)$ could reach 1.0.
+
+%%%This matching problem is really the problem of finding maximum
+%%%cardinality bipartite matching of $P$ and $P'$, using $sim(u,u') \geq
+%%%\sigma$ as a condition to make the edges.
+
+%To avoid recursive computation, we develop an approximate, iterative algorithm, which will be explained next.
+
+%- A system is represented as an attributed, interaction/dependency graph:
+%
+%+ Each node represents an entity in the system: package, class/interface, method.
+%
+%+ A node has a set of attributes: interface (pathname/signature), implementation (body usage vector).
+%
+%+ Edges represent different relations between nodes: interaction/dependency caller-callee (client-server) - employer-employee/co-operate/collaborator, colleague
+%
+%X and Y are employer-employee related: Y is used in X, used = inherited, called, declared as field/variable/parameter.
+%
+%X and Y are colleague related: are both used inside Z' implementation.
+%
+%Philosophy/Assumption: evolved entities might have changes in interface or implementation but little in interaction. Especially interaction is the most stable (changes at design level).
+%
+%Thus, similarity on interface/implementation/interaction of entities could be used to tracking them.
+%
+%Define: sim(x,y) = total similarity
+%
+%        or matched(x,y) = some conditions...
+%
+%Problem: graph matching, maximize number of matches.
+%
+%\subsection{Similarity measurement}
+%
+%This section discusses the similarity measurements designed for different types of software entities (package, class, method).
+%
+%1. Method similarity
+%
+%- signature: return type + name + list of parameter types
+%
+%- internal interactions:  usages of other methods within its implementation
+%
+%- external interations: its usage within other methods' implementations
+%
+%- local types: usages of classes within its implementation
+%
+%2. Class similarity
+%
+%- signature: name
+%
+%- inheritance/interface relation
+%
+%- declared classes
+%
+%- body: synthesized from all normalized contained methods' features. All methods' vectors are normalized to have the length of 1 and summed up.
+%
+%3. Package similarity
+%
+%- signature: name and containg package's name
+%
+%- body: all contained packages and classes
+%
+%4. Name similarity measurement: Names are tokenized based on naming convention and then compared using long common sub-sequence
+%
+%5. Structure vector similarity: ratio between shared structural features (including the frequency) and total structural features.
+%
+%6. Interaction set/vector similarity: set similarity: $$sim(X,Y) = \frac {|X \cap Y|} {|X \cup Y|} $$, or distance (normalized, or Spearman correlation??? )???

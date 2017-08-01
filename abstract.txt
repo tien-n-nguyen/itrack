@@ -1,0 +1,94 @@
+After changes are made to a system, developers typically perform
+regression testing to uncover the regression faults in previously
+existing functionality of the system. However, during software
+evolution, the program entities (i.e., classes/methods) realizing such
+functionality might be modified or replaced by other entities. Thus,
+in the new version, existing test cases containing obsolete class
+references or method calls might be broken or might not test the
+intended functionality. To repair the broken method calls in those
+test cases, for each obsolete class or method, a tester needs to find
+the corresponding entity that provides the same/similar function or
+has the same role in the new version. To automate that task, we
+present ITrack, a novel tool for matching program entities across
+versions, which mainly relies on their interactions in the code. The
+key idea is that the role and functionality of an entity correlate
+with its interactions with other entities (e.g., how it uses or is
+used by others). Two entities in two versions are matched based on the
+similarity of their interactions with other entities in the respective
+versions via our novel iterative matching algorithm. Our empirical
+evaluation shows that ITrack achieves from 84--99% accuracy in
+identifying the calls in previous test cases that need to be adapted
+in accordance with the replacements of entities and provide such
+matching to support repairing broken method calls.
+
+
+After changes are made to a system, developers typically perform
+regression testing to uncover the regression faults in previously
+existing functionality of the system. However, during software
+evolution, the program entities (i.e., classes/methods) realizing such
+functionality might be modified or replaced by other entities. Thus,
+in the new version, existing test cases containing obsolete class
+references or method calls might be broken or might not test the
+intended functionality. To repair the broken method calls in those
+test cases, for each obsolete class or method, a tester needs to find
+the corresponding entity that provides the same/similar function or
+has the same role in the new version. To automate that task, we
+present ITrack, a novel tool for matching program entities across
+versions, which mainly relies on their interactions in the code. The
+key idea is that the role and functionality of an entity correlate
+with its interactions with other entities (e.g., how it uses or is
+used by others). Two entities in two versions are matched based on the
+similarity of their interactions with other entities in the respective
+versions via our novel iterative matching algorithm. Our empirical
+evaluation shows that ITrack achieves from 84--99\% accuracy in
+identifying the calls in previous test cases that need to be adapted
+in accordance with the replacements of entities and provide such
+matching to support repairing broken method calls.
+
+After changes are made to a system, developers typically perform
+regression testing to uncover the regression faults in previously
+existing functionality of the system. However, during software
+evolution, the program entities (i.e., classes/methods) realizing such
+functionality might be modified/replaced by other entities. Thus, in
+the new version, existing test cases containing obsolete class
+references or method calls might be broken or might not test the
+intended functionality. To repair the broken method calls in those
+test cases, for each obsolete class/method, a tester needs to find the
+correspond entity providing the same/similar function or having the
+same role in the new version.  To automate that task, in this paper,
+we propose ITRACK, a novel tool for matching program entities across
+versions, which mainly relies on their interactions in the code. The
+key idea of ITRACK is that the role and functionality of an entity
+correlate with its interactions with other entities (e.g., how it uses
+or is used by others). Two entities in two versions are matched based
+on the similarity of their interactions with other entities in the
+respective versions via our novel iterative matching algorithm. Our
+empirical evaluation shows that ITRACK achieves from 84-99% accuracy
+in identifying the calls in previous test cases that need to be
+adapted in accordance with the replacements of entities and provide
+such matching to support repairing broken method calls.
+
+
+After changes are made to a system, developers typically
+perform regression testing to uncover the regression faults
+in previously existing functionality of the system. However, during
+software evolution, the program entities (i.e., classes/methods)
+realizing such functionality might be modified/replaced by other
+entities. Therefore, in the new version, some existing test cases
+containing obsolete classes/method calls might be broken or might
+not test the intended functionality. To repair the broken method
+calls in those test cases, for each obsolete class/method, a tester
+needs to find the correspond entity providing the same/similar
+function or having the same role in the new version. To automate
+that task, in this paper, we propose iTrack, a novel tool for
+matching program entities across versions, which mainly relies
+on their interactions in the system. The key philosophy of iTrack
+is that the role and functionality of an entity correlate with
+its interactions with other entities (e.g., how it uses or is used
+by others). Two entities in two versions are matched based
+on the similarity of their interactions with other entities in
+respective versions via our novel iterative matching algorithm.
+Our empirical evaluation shows that iTrack is able to accurately
+identify the previous test cases that need to be adapted in
+accordance with the replacements of entities and provide such
+matching to support repairing the broken method calls.

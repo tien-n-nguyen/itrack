@@ -1,0 +1,303 @@
+\section{{\tool} Algorithms}
+\label{algosection}
+
+In this section, we present the key algorithms in {\tool}.
+%%ASE
+%%to solve the problem formulated in Section~\ref{model}.
+The main algorithm (\code{System\-Match}) is for matching the program
+entities between two versions of a system, using Definition~1 and
+Definition 3 for the matching criteria. This algorithm utilizes a
+greedy algorithm (\code{Simple\-Match}) to match the entities in two
+given sets. The last algorithm, \code{FindTestCase}, uses the list of
+matched entities to find existing test cases that need~fixing.
+
+%We first start with the algorithm to calculate
+%the common subset of two sets of entities as in Definition 5, which
+%can be used to detect the matching between the entities in any two
+%sets. Then, we present our algorithm to match the entities between two
+%versions of the system for feature tracking.
+
+% which selects the
+% candidates and calculates the common subset via the first algorithm.
+
+%The pseudo-code for algorithms is in Figure~\ref{matching}.
+
+\subsection{Key Design Ideas}
+
+Initially, one might think that matching the entities could be done
+using a classical bipartite matching algorithm following
+Definition~1. However, such a (brute-force) algorithm will not work
+because of the following issues:
+
+1. {\em Efficiency}. Classical bipartite matching has the
+   computational complexity of $O(n^3)$, with $n$ being the number of
+   entities. With this high level of computational complexity, the
+   algorithm does not scale well for large systems with several
+   thousands of entities (classes and methods).
+
+2. {\em Determinism}. The criteria for matched entities is recursive
+   by nature. Assume that $u$ and $v$ are two related entities. To
+   match $u$ to $u'$ (Definition~1), we might need to compute the
+   similarity of two sets including $v$ and some entity $v'$ related
+   to $u'$ (Definitions~3 and 4). This computation requires the
+   matching information of $v$ to $v'$ (Definition~5). If $v$ and $v'$
+   are not yet matched, this matching computation in turn requires the
+   matching of $u$ and $u'$, which is currently under calculation.
+
+
+%uses the knowledge from already-matched code entities to incrementally
+%update the similarities of not-yet-matched entities for further
+%matching.
+
+To overcome these two issues, we have designed a novel algorithm for
+this matching problem. The algorithm works in an {\bf iterative}
+fashion, using \emph{already-matched} entities to find new candidates
+and compute their similarity for further matching. That is, instead of
+considering all pairs of entities as possible matched pairs, {\tool}
+maintains and processes a list of pairs as candidates. To compute the
+similarity of two entities in a candidate pair, {\tool} uses only the
+already-matched entities (\eg in finding the common subset in
+Definition~5), disregarding the recursive nature of the similarity
+calculation. If they are matched, their related entities
+(\eg methods, callers, callees, or sub-classes) are potentially
+matched entities, thus, are considered to be added to the list of
+candidates (via re-calculating their similarity). All the remaining
+entities are compared pairwise at the final step, which is much less
+expensive than the pairwise comparison at the beginning.
+
+At first, {\tool} uses name-based and implementation-based criteria to
+find the initial candidates. That is, it initializes its candidate
+list with the entities having the same simple names (class or
+method names without the signatures), and then the entities with
+similar bodies. To find the entities having similar bodies, {\tool}
+utilizes locality-sensitive hashing (LSH)~\cite{lsh} on the
+characteristic vectors extracted from their implementation code. For
+example, the body vector of a class is a binary vector of the
+occurrences of classes used in its fields and
+methods. Locality-sensitive hashing is a hashing scheme that provides
+the same hash code for similar vectors. Thus, to find entities with
+similar implementation code, {\tool} hashes their vectors and only
+compares the entities having the same hash code.
+
+Next, we will discuss the details of three algorithms to find the
+matched subset of two entity sets (Definition 5), to match the
+entities between two versions (Definition 1), and to detect the test
+cases that need adaptation.
+
+\subsection{Simple Matching}
+\label{simplematch}
+
+\begin{figure}
+\begin{lstlisting}[stepnumber=1,numbers=left,numbersep=-5pt]
+		function match($U$, $U'$, $N$)
+		//find matched set $U \otimes U'$, output as a map $N$
+			$N$.clear()
+			repeat
+				$L$ = new descendingly sorted list associating with $sim$
+				for all $(u,u') \in U \times U'$
+					if($sim(u,u') \geq \sigma$)
+						$L$.add$(u,u')$ //collect all pairs of candidates
+				if $L = \emptyset$ break //no pair collected => done
+		
+				while($L \neq \emptyset$)
+					$(u,u') = L$.top() //match top ones
+					$N$.add$(u,u')$
+					remove all $(u,v') \in L$ and $(v,u') \in L$ //remove their pairs
+			until false
+\end{lstlisting}
+\caption{Simple Matching Algorithm}
+\label{cmatching}
+\end{figure}
+
+Let us first describe the algorithm to match the entities between two
+sets of entities $U$ and $U'$ in two different versions
+(Definition~5). It is called \code{simple match}, because it
+is a separate computation step for
+%simplifies the computation of
+the similarity of two entities without recursion. That is, for each $u
+\in U$ and $u' \in U'$, if $u$ and $u'$ are already matched, then
+$sim(u,u') = 1$. Otherwise, it initializes $sim(u,u')=nsim(u,u')$ with
+$nsim$ being their name similarity defined in Definition 2 and updates
+this value if more information is available. Thus, $sim$ is always
+defined for any pair of entities $u$ and $u'$. In addition, it uses a
+greedy approach that iteratively selects the matching pairs
+descendingly by their similarity degrees.
+
+%, thus, reducing the complexity to $O(n^2)$.
+
+Fig.~\ref{cmatching} illustrates the algorithm. First, it
+collects all pairs of entities $u \in U$ and $u' \in U'$ satisfying
+the necessary condition for matching, \ie$sim(u,u') \ge
+\sigma$. Those pairs are maintained in a heap, \ie a descending
+sorted list $L$ (lines 5-8), sorted by the similarity
+$sim(u,u')$. Then, {\tool} repeatedly detects the pair $(u,u')$ with
+the highest $isim$ in that sorted list as a matched pair (lines
+12-13), and removes all pairs containing either one of its two
+entities $u$ or $u'$ (line 14). This step ensures that each entity $u$
+is matched at most one other entity $u'$ in which the interaction
+similarity $isim$ is maximal. The newly matched pairs now are used
+to recalculate $sim$ for the non-matched entities in $U$ and $U'$
+when the process repeats (lines 4-15) until no other candidates
+can be collected (line 9).
+
+%This greedy approach is reasonable in this situation because we want to map each entity in one version with at most one entity in the other version of the system and there are no two entities having the same signature in one version of a system.
+
+\subsection{System Matching}
+
+
+Fig.~\ref{matching} illustrates the main algorithm to match entities
+from a version $P$ to a new version $P'$. It outputs a map $C$
+containing pairs of matched classes $(c,c')$ and a map $M$ containing
+pairs of matched methods $(m,m')$. This algorithm has two main steps:
+matching the classes and then the methods. For those steps, the same
+procedure is applied: first, it processes for the
+candidates with the same simple name, then for the candidates having
+similar characteristic vectors extracted from body code, and finally,
+all remaining candidates are compared pair-wise. The candidates with the
+same names or similar vectors are identified via LSH.
+
+\begin{figure}
+\begin{lstlisting}[stepnumber=1,numbers=left,numbersep=-5pt]
+		function track($P, P'$)
+		//match entities in two versions $P$ and $P'$ to two maps $C$ and $M$
+			$C$ = matchClasses()
+			$M$ = matchMethods()
+		return $C, M$
+		
+		function matchClasses()
+			$X$.addAll(classes of $P$) and $X'$.addAll(classes of $P'$)
+			$N$ = HashbyName($X$) and $N'$ = HashbyName($X'$)
+			for each $n$ in $N$.keys $\cap$ $N'$.keys: process($N(n), N'(n), C$)
+			$H$ = LSHbyBodyVector($X$) and $H'$ = LSHbyBodyVector($X'$)
+			for each $k$ in $H$.keys $\cap$ $H'$.keys: process($H(k), H'(k), C$)
+			process($X, X', C$)
+		return $C$
+		
+		function matchMethods()
+			$X$.addAll(methods of $P$) and $X'$.addAll(methods of $P'$)
+			for each matched classes pair $(c,c') \in C$:
+				process($c$.methods, $c'$.methods, $M$)
+			$N$ = HashbyName($X$) and $N'$ = HashbyName($X'$)
+			for each $n$ in $N$.keys $\cap$ $N'$.keys: process($N(n), N'(n), M$)
+			$H$ = LSHbyBodyVector($S$) and $H'$ = LSHbyBodyVector($S'$)
+			for each $k$ in $H$.keys $\cap$ $H'$.keys: process($H(k), H'(k), M$)
+			process($X, X', M$)
+		return $M$
+		
+		function process($U, U', O$)
+		//match entities in $U$ and $U'$, add them to the map of matched entities $O$, and remove them from the remaining sets.
+			match($U$, $U'$, $N$)
+			$O$.addAll($N$)
+			$X$.removeAll($N$.keys)
+			$X'$.removeAll($N$.values)
+\end{lstlisting}
+\caption{System Matching Algorithm}
+\label{matching}
+\end{figure}
+
+\subsubsection{Matching Classes}
+
+{\tool} matches the classes (lines 7-14) before matching the methods
+(lines 16-25). To match classes, it first processes the candidates
+having the same simple names (lines 9-10). It uses string-based
+hashing scheme to hash the classes into buckets, each bucket is a
+set of entities having the same name. Then, for each pair of buckets
+for the same name, it uses \code{simple match}
+(Section~\ref{simplematch}) to match their entities. The matched
+entities are added to the global map $C$ and removed from the sets of
+remaining entities $X$ and $X'$.
+
+Then, {\tool} processes the candidates having sufficiently similar
+vectors extracted from their bodies (lines 11-12). The process is
+similar to the previous step. The vector extracted from a class $c$
+describes the classes used in $c$. Instead of string-based hashing,
+{\tool} uses locality-sensitive hashing to hash and find similar
+vectors. Finally, {\tool} matches the remaining classes pairwise (line
+13).
+
+Note that, the similarity of names or body code is used only to
+suggest the candidates for matching. Those candidates are actually
+matched using the interaction similarity (defined in Definition~3) as
+in the algorithm in Section~\ref{simplematch}.
+
+\subsubsection{Matching Methods}
+
+To match the methods, the algorithm first finds the candidate methods
+in the classes that are matched in the previous step (lines 18-19)
+because if the classes are matched, their methods should be the
+candidates for matching. However, there are many cases in which the
+methods might be extracted/split from the old class. Thus, the next
+step of the algorithm is to find the candidate methods {\em across the
+classes}. Once again, {\tool} uses name and body to suggest the
+candidates. It starts processing the candidate methods in any classes
+having the same names (lines 20-21). Then, it considers the methods
+having similar bodies (lines 22-23). The body vector of a method is a
+binary vector of the occurrences of methods that are called in its
+body, \ie the vector representing the set \code{Callee}. Finally, the
+remaining methods are pairwise compared (line 24). Similar to the
+classes, candidate methods are matched using the algorithm in
+Section~\ref{simplematch} with the interaction similarity criteria in
+Definition~1.
+
+%\begin{figure}
+%\begin{lstlisting}[basicstyle=\small\sffamily, stepnumber=1,numbers=left, language = Delphi]
+%function FeatureTrack($P, P'$)
+%// Match entities in two versions $P$ and $P'$ to a map $M$
+%//  Step 1.1. Match classes using name for candidates
+% $C$.addAll(classes of $P$) and $C'$.addAll(classes of $P'$)
+% $H$ = HashbyName($C$) and $H'$ = HashbyName($C'$)
+% for each name $n$ in $H$.keys $\cap$ $H'$.keys //candidates by name
+%  match($H(n), H'(n), N$) and update($N, M_C, C, C'$)
+%
+%//  Step 1.2. Match classes using body for candidates
+%//  use locality-sensitive hashing: similar body => same hash code
+% $H$ = LSHbyBodyVector($C$) and $H'$ = LSHbyBodyVector($C'$)
+% for each hash code $k$ in $H$.keys $\cap$ $H'$.keys
+%  match($H(k), H'(k), N$) and update($N, M_C, C, C'$)
+%
+%//   Step 1.3. Match all remaining classess
+% match($C, C', N$) and update($N, M_C, C, C'$)
+%
+%//  Step 2.1. Match methods using name for candidates
+% $M$.addAll(methods of $P$) and $M'$.addAll(methods of $P'$)
+% for each matched classes pair $(A,A') \in M_C$
+%  match($A$.methods, $A'$.methods, $N$) and update($N, M_M, M, M'$)
+% $H$ = HashbyName($M$) and $H'$ = HashbyName($M'$)
+% for each name $n$ in $H$.keys $\cap$ $H'$.keys //candidates by name
+%  match($H(n), H'(n), N$) and update($N, M_M, M, M'$)
+%
+%//  Step 2.2. Match methods using body for candidates
+% $H$ = LSHbyBodyVector($M$) and $H'$ = LSHbyBodyVector($M'$)
+% for each hash code $k$ in $H$.keys $\cap$ $H'$.keys
+%  match($H(k), H'(k), N$) and update($N, M_M, M, M'$)
+%
+%//  Step 2.3. Match all remaining methods
+% match($M, M', N$) and update($N, M_M, M, M'$)
+%
+%function update($N, O, U, U'$)
+%//remove newly-found matched entities $N$ from unmatched entities $U$ and $U'$ and add them to global matched entities $O$
+% $O$.addAll($N$)
+% $U$.removeAll($N$.keys)
+% $U'$.removeAll($N$.values)
+%
+%\end{lstlisting}
+%\caption{Entities Matching Algorithm}
+%\label{matching}
+%\end{figure}
+
+\subsection{Recommending Repairing Broken Method Calls}
+{\tool} uses a simple criterion to find the previously run test cases
+that require an repair. That is, a test case $t$ is recommended for repair if it uses an entity $u$ (\eg declares an object of class $u$ or calls method $u$) that needs to be replaced. {\tool} considers $u$
+to be replaced if:
+
+1. It is not matched to any entity in the new version (\ie is deleted), or
+
+2. Its matched entity $u'$ has a different signature.
+
+Using this criteria, after matching all entities for the system,
+{\tool} analyzes all the existing test cases. If a test case
+$t$ satisfies the aforementioned criterion with some entities $u$, {\tool} will output $t$, $u$, and its matched entity $u'$ (if any) as the recommendation, \ie $t$ is recommended for repair in which $u$ is replaced by $u'$.
+
+%(In the future works, we plan to use more sophisticated change
+%analysis techniques to find the test cases that is affected by the
+%change of the system). 
